@@ -186,7 +186,7 @@
   ],
   "outputs": {
     "cosmosConnectionString":{
-      "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName')),'2019-08-01')[0].connectionString]",
+      "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName')),'2019-08-01').primaryMasterKey]",
       "type": "string"
     }
   }
