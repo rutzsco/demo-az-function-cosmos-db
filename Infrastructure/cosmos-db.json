@@ -137,8 +137,7 @@
         "consistencyPolicy": "[variables('consistencyPolicy')[parameters('defaultConsistencyLevel')]]",
         "databaseAccountOfferType": "Standard",
         "enableAutomaticFailover": "[parameters('automaticFailover')]",
-        "enableMultipleWriteLocations": "[parameters('multipleWriteLocations')]",
-        "enableFreeTier": true
+        "enableMultipleWriteLocations": "[parameters('multipleWriteLocations')]"
       }
     },
     {
