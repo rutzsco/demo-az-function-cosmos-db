@@ -169,7 +169,7 @@
           "id": "[parameters('container1Name')]",
           "partitionKey": {
             "paths": [
-              "[parameters('container1PartitionKey')]]"
+              "[parameters('container1PartitionKey')]"
             ],
             "kind": "Hash"
           },
