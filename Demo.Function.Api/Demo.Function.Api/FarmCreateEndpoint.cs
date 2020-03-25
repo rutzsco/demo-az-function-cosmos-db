@@ -15,7 +15,7 @@ namespace Demo.Function.Api
     {
         [FunctionName("FarmCreateEndpoint")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, 
-            [CosmosDB(databaseName: "Measurements", collectionName: "Farms", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Farm> documents,
+            [CosmosDB(databaseName: "FarmDB", collectionName: "Farms", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Farm> documents,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
