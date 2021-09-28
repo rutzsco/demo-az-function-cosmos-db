@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Demo.Function.Api.Data
 {
-    public class FarmQueryService
+    public class AccountQueryService
     {
         private readonly Uri _serviceEndpoint;
         private readonly string _authKey;
 
-        public FarmQueryService(string connectionString)
+        public AccountQueryService(string connectionString)
         {
             var builder = new DbConnectionStringBuilder() { ConnectionString = connectionString };
 
@@ -30,13 +30,13 @@ namespace Demo.Function.Api.Data
             }
         }
 
-        public async Task<IEnumerable<Farm>> GetListing()
+        public async Task<IEnumerable<Account>> GetListing()
         {
             using (var client = new DocumentClient(_serviceEndpoint, _authKey))
             {
-                var collectionLink = UriFactory.CreateDocumentCollectionUri("FarmDB", "Farms");
-                var query = client.CreateDocumentQuery<Farm>(collectionLink, new FeedOptions { EnableCrossPartitionQuery = true })
-                    .Where(x => x.ItemType == "Farm").AsDocumentQuery();
+                var collectionLink = UriFactory.CreateDocumentCollectionUri("MeasurementsDB", "Accounts");
+                var query = client.CreateDocumentQuery<Account>(collectionLink, new FeedOptions { EnableCrossPartitionQuery = true })
+                    .Where(x => x.ItemType == "Account").AsDocumentQuery();
 
                 return await GetAllResultsAsync(query);
             }

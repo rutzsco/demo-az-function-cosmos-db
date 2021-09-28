@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Demo.Function.Api.Model
 {
-    public class FarmDetails
+    public class AccountDetails
     {
-        public string FarmName { get; set; }
+        public string AccountName { get; set; }
 
         public string NumberOfCalves { get; set; }
 

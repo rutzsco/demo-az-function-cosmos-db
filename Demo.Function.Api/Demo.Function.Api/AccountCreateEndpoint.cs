@@ -11,29 +11,29 @@ using Demo.Function.Api.Model;
 
 namespace Demo.Function.Api
 {
-    public static class FarmCreateEndpoint
+    public static class AccountCreateEndpoint
     {
-        [FunctionName("FarmCreateEndpoint")]
+        [FunctionName("AccountCreateEndpoint")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, 
-            [CosmosDB(databaseName: "FarmDB", collectionName: "Farms", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Farm> documents,
+            [CosmosDB(databaseName: "MeasurementDB", collectionName: "Accounts", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Account> documents,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             // Convert to request object
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var farmDetails = JsonConvert.DeserializeObject<FarmDetails>(requestBody);
+            var accountDetails = JsonConvert.DeserializeObject<AccountDetails>(requestBody);
 
             // Map to document object
-            if (string.IsNullOrEmpty(farmDetails.FarmName))
-                return new BadRequestObjectResult("Farm Name is required.");
+            if (string.IsNullOrEmpty(accountDetails.AccountName))
+                return new BadRequestObjectResult("Account Name is required.");
 
-            var farmDocument = new Farm(farmDetails);
+            var account = new Account(accountDetails);
 
             // Save
-            await documents.AddAsync(farmDocument);
+            await documents.AddAsync(account);
 
-            return new OkObjectResult(farmDocument.Id);
+            return new OkObjectResult(account.Id);
         }
     }
 }

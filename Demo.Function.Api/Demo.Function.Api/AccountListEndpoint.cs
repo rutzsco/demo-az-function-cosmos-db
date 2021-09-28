@@ -11,9 +11,9 @@ using Demo.Function.Api.Data;
 
 namespace Demo.Function.Api
 {
-    public static class FarmListEndpoint
+    public static class AccountListEndpoint
     {
-        [FunctionName("FarmListEndpoint")]
+        [FunctionName("AccountListEndpoint")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log, ExecutionContext context)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -22,7 +22,7 @@ namespace Demo.Function.Api
             var cosmosDBConnection = config["CosmosDBConnection"];
 
 
-            var queryService = new FarmQueryService(cosmosDBConnection);
+            var queryService = new AccountQueryService(cosmosDBConnection);
             var listing = await queryService.GetListing();
 
             return new OkObjectResult(listing);

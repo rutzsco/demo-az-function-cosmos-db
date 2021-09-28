@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Demo.Function.Api.Model
 {
-    public class Farm
+    public class Account
     {
-        public Farm(FarmDetails farmDetails)
+        public Account(AccountDetails accountDetails)
         {
             Id = Guid.NewGuid();
-            ItemType = "Farm";
-            FarmDetails = farmDetails ?? throw new ArgumentNullException(nameof(farmDetails));
+            ItemType = "Account";
+            AccountDetails = accountDetails ?? throw new ArgumentNullException(nameof(accountDetails));
         }
 
         [JsonProperty(PropertyName = "id")]
@@ -19,6 +19,6 @@ namespace Demo.Function.Api.Model
 
         public string ItemType { get; set; }
 
-        public FarmDetails FarmDetails { get; set; }
+        public AccountDetails AccountDetails { get; set; }
     }
 }
