@@ -98,7 +98,7 @@
     },
     "container1PartitionKey": {
       "type": "string",
-      "defaultValue": "id",
+      "defaultValue": "/id",
       "metadata": {
         "description": "The name for the first container partition key"
       }
