@@ -9,16 +9,8 @@ namespace Demo.Function.Api.Model
     {
         public string AccountName { get; set; }
 
-        public string NumberOfCalves { get; set; }
-
-        public string Address { get; set; }
+        public string PostalCode { get; set; }
 
         public string ContactPerson { get; set; }
-
-        public string ContactNumber { get; set; }
-
-        public string TechnicalContactPerson { get; set; }
-
-        public string TechnicalContactNumber { get; set; }
     }
 }

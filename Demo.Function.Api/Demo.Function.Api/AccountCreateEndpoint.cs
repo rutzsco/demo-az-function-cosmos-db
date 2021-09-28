@@ -14,7 +14,7 @@ namespace Demo.Function.Api
     public static class AccountCreateEndpoint
     {
         [FunctionName("AccountCreateEndpoint")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, 
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "account")] HttpRequest req, 
             [CosmosDB(databaseName: "MeasurementDB", collectionName: "Accounts", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Account> documents,
             ILogger log)
         {

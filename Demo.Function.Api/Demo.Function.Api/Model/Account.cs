@@ -7,18 +7,26 @@ namespace Demo.Function.Api.Model
 {
     public class Account
     {
+        public Account()
+        { 
+        }
+
         public Account(AccountDetails accountDetails)
         {
             Id = Guid.NewGuid();
-            ItemType = "Account";
-            AccountDetails = accountDetails ?? throw new ArgumentNullException(nameof(accountDetails));
+
+            AccountName = accountDetails.AccountName;
+            PostalCode = accountDetails.PostalCode;
+            ContactPerson = accountDetails.ContactPerson;
         }
 
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
-        public string ItemType { get; set; }
+        public string AccountName { get; set; }
 
-        public AccountDetails AccountDetails { get; set; }
+        public string PostalCode { get; set; }
+
+        public string ContactPerson { get; set; }
     }
 }

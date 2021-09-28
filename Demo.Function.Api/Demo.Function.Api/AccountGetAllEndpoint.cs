@@ -8,22 +8,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Demo.Function.Api.Data;
+using Microsoft.Azure.Cosmos;
 
 namespace Demo.Function.Api
 {
-    public static class AccountListEndpoint
+    public class AccountGetAllEndpoint
     {
+        private CosmosClient _cosmosClient;
+
+        public AccountGetAllEndpoint(CosmosClient cosmosClient)
+        {
+            this._cosmosClient = cosmosClient;
+        }
+
         [FunctionName("AccountListEndpoint")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log, ExecutionContext context)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account")] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var config = context.BuildConfiguraion();
-            var cosmosDBConnection = config["CosmosDBConnection"];
-
-
-            var queryService = new AccountQueryService(cosmosDBConnection);
-            var listing = await queryService.GetListing();
+            var queryService = new AccountQueryService(_cosmosClient);
+            var listing = await queryService.GetAll();
 
             return new OkObjectResult(listing);
         }

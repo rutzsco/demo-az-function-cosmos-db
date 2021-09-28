@@ -1,4 +1,6 @@
 ﻿using Demo.Function.Api.Model;
+
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
@@ -12,50 +14,33 @@ namespace Demo.Function.Api.Data
 {
     public class AccountQueryService
     {
-        private readonly Uri _serviceEndpoint;
-        private readonly string _authKey;
+        private CosmosClient _cosmosClient;
 
-        public AccountQueryService(string connectionString)
+        public AccountQueryService(CosmosClient cosmosClient)
         {
-            var builder = new DbConnectionStringBuilder() { ConnectionString = connectionString };
-
-            if (builder.TryGetValue("AccountKey", out object key))
-            {
-                _authKey = key.ToString();
-            }
-
-            if (builder.TryGetValue("AccountEndpoint", out object uri))
-            {
-                _serviceEndpoint = new Uri(uri.ToString());
-            }
+            _cosmosClient = cosmosClient;
         }
 
-        public async Task<IEnumerable<Account>> GetListing()
+        public async Task<IEnumerable<Account>> GetAll()
         {
-            using (var client = new DocumentClient(_serviceEndpoint, _authKey))
+            var container = this._cosmosClient.GetContainer("MeasurementDB", "Accounts");
+            QueryDefinition query = new QueryDefinition("SELECT * FROM C");
+            List<Account> results = new List<Account>();
+            using (FeedIterator<Account> resultSetIterator = container.GetItemQueryIterator<Account>(query))
             {
-                var collectionLink = UriFactory.CreateDocumentCollectionUri("MeasurementsDB", "Accounts");
-                var query = client.CreateDocumentQuery<Account>(collectionLink, new FeedOptions { EnableCrossPartitionQuery = true })
-                    .Where(x => x.ItemType == "Account").AsDocumentQuery();
-
-                return await GetAllResultsAsync(query);
-            }
-        }
-
-  
-        private async static Task<T[]> GetAllResultsAsync<T>(IDocumentQuery<T> queryAll)
-        {
-            var list = new List<T>();
-            while (queryAll.HasMoreResults)
-            {
-                var docs = await queryAll.ExecuteNextAsync<T>();
-                foreach (var d in docs)
+                while (resultSetIterator.HasMoreResults)
                 {
-                    list.Add(d);
+                    Microsoft.Azure.Cosmos.FeedResponse<Account> response = await resultSetIterator.ReadNextAsync();
+                    results.AddRange(response);
                 }
             }
-
-            return list.ToArray();
+            return results;
+        }
+        public async Task<Account> GetById(string id)
+        {
+            var container = this._cosmosClient.GetContainer("MeasurementDB", "Accounts");
+            var result = await container.ReadItemAsync<Account>(id, new PartitionKey(id));
+            return result;
         }
     }
 }
