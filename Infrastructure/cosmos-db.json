@@ -91,7 +91,7 @@
     },
     "container1Name": {
       "type": "string",
-      "defaultValue": "Readings",
+      "defaultValue": "Accounts",
       "metadata": {
         "description": "The name for the first SQL container"
       }
@@ -99,6 +99,20 @@
     "container1PartitionKey": {
       "type": "string",
       "defaultValue": "/id",
+      "metadata": {
+        "description": "The name for the first container partition key"
+      }
+    },
+    "container2Name": {
+      "type": "string",
+      "defaultValue": "Readings",
+      "metadata": {
+        "description": "The name for the first SQL container"
+      }
+    },
+    "container2PartitionKey": {
+      "type": "string",
+      "defaultValue": "/accountId",
       "metadata": {
         "description": "The name for the first container partition key"
       }
@@ -182,14 +196,41 @@
           }
         }
       }
+    },
+    {
+      "type": "Microsoft.DocumentDb/databaseAccounts/apis/databases/containers",
+      "name": "[concat(variables('accountName'), '/sql/', parameters('databaseName'), '/', parameters('container2Name'))]",
+      "apiVersion":  "2016-03-31",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/apis/databases', variables('accountName'), 'sql', parameters('databaseName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "[parameters('container2Name')]",
+          "partitionKey": {
+            "paths": [
+              "[parameters('container2PartitionKey')]"
+            ],
+            "kind": "Hash"
+          },
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ]
+          }
+        }
+      }
     }
   ],
   "outputs": {
-    "cosmosConnectionString":{
+    "cosmosConnectionString": {
       "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName')), '2019-12-12').connectionStrings[0].connectionString]",
       "type": "string"
     },
-    "cosmosKey":{
+    "cosmosKey": {
       "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName')),'2019-08-01').primaryMasterKey]",
       "type": "string"
     }
