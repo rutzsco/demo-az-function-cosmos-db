@@ -2,7 +2,7 @@
  
 ## Overview
 
-![GitHub Logo](az-pipeline-yaml-flow.png)
+![GitHub Logo](conceptual-design.png)
 
 ## Key Components
 
