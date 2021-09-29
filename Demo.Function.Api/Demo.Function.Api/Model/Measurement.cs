@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Demo.Function.Api.Model
 {
-    public class Reading
+    public class Measurement
     {
-        public Reading()
+        public Measurement()
         { 
         }
 
@@ -23,10 +23,10 @@ namespace Demo.Function.Api.Model
         [JsonProperty(PropertyName = "type")]
         public Guid Type { get; set; }
 
-        public TempuratureReading TempuratureReading { get; set; }
+        public TempuratureMeasurement TempuratureMeasurement { get; set; }
     }
 
-    public class TempuratureReading
+    public class TempuratureMeasurement
     {
         public decimal Value { get; set; }
 
