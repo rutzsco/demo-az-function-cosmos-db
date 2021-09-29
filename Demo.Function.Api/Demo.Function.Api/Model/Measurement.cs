@@ -21,7 +21,7 @@ namespace Demo.Function.Api.Model
         public Guid DeviceId { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public Guid Type { get; set; }
+        public string Type { get; set; }
 
         public TempuratureMeasurement TempuratureMeasurement { get; set; }
     }
