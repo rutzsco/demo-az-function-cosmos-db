@@ -1,8 +1,6 @@
 # demo-az-function-cosmos-db
- 
-## Overview
 
-![GitHub Logo](conceptual-design.png)
+Reference implementation for serverless API hosted with an Azure Function and a CosmosDB backend.
 
 ## Key Components
 
@@ -20,4 +18,6 @@ ARM templates are located in the Infrstructure folder and used in the release pi
 
 **azure-release-pipelines.yml** - contains the release pipeline that triggers on completion of the build pipeline. This pipeline leverages the azure-release-pipelines-stage-template.yml template to deploy each stage.
 
-### Logic
+### Solution
+
+![GitHub Logo](conceptual-design.png)
