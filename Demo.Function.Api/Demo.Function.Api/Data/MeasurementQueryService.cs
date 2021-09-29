@@ -16,7 +16,7 @@ namespace Demo.Function.Api.Data
     {
         private readonly CosmosClient _cosmosClient;
         private static readonly string DatabaseName = "MeasurementDB";
-        private static readonly string ContainerName = "Readings";
+        private static readonly string ContainerName = "Measurements";
 
         public MeasurementQueryService(CosmosClient cosmosClient)
         {

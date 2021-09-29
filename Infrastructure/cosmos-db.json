@@ -105,7 +105,7 @@
     },
     "container2Name": {
       "type": "string",
-      "defaultValue": "Readings",
+      "defaultValue": "Measurements",
       "metadata": {
         "description": "The name for the first SQL container"
       }

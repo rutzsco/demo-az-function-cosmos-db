@@ -46,7 +46,7 @@ namespace Demo.Function.Api
 
         [FunctionName("MeasurementCreateEndpoint")]
         public static async Task<IActionResult> Create([HttpTrigger(AuthorizationLevel.Function, "post", Route = "measurement")] HttpRequest req,
-            [CosmosDB(databaseName: "MeasurementDB", collectionName: "Readings", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Measurement> documents,
+            [CosmosDB(databaseName: "MeasurementDB", collectionName: "Measurements", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Measurement> documents,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
