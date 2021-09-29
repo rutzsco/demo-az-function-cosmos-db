@@ -23,7 +23,7 @@ namespace Demo.Function.Api
         }
 
         [FunctionName("DeviceGetAllEndpoint")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/device")] HttpRequest req, string accountId, ILogger log, ExecutionContext context)
+        public async Task<IActionResult> GetAll([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/device")] HttpRequest req, string accountId, ILogger log, ExecutionContext context)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -34,7 +34,7 @@ namespace Demo.Function.Api
         }
 
         [FunctionName("DeviceGetEndpoint")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/device/{id}")] HttpRequest req, string id, string accountId, ILogger log, ExecutionContext context)
+        public async Task<IActionResult> Get([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/device/{id}")] HttpRequest req, string id, string accountId, ILogger log, ExecutionContext context)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -45,7 +45,7 @@ namespace Demo.Function.Api
         }
 
         [FunctionName("DeviceCreateEndpoint")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "measurement")] HttpRequest req,
+        public static async Task<IActionResult> Create([HttpTrigger(AuthorizationLevel.Function, "post", Route = "device")] HttpRequest req,
             [CosmosDB(databaseName: "MeasurementDB", collectionName: "Readings", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Device> documents,
             ILogger log)
         {
