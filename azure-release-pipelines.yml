@@ -34,3 +34,14 @@ stages:
     region: ${{ variables.region }}
     packageName: ${{ variables.packageName }}
     cosmosDbName: 'rutzsco-demo-cosmos-db-qa'
+- template: azure-release-pipelines-stage-template.yml
+  parameters:
+    stageName: 'PROD'
+    environment: 'API-PROD'
+    azureSubscription: ${{ variables.azureSubscription }}
+    functionAppName: 'rutzsco-function-api-cosmos-db-p'
+    resourceGroupName: 'rutzsco-function-api-cosmos-db-p'
+    storageAccountName: 'azfuncapicdb1qp'
+    region: ${{ variables.region }}
+    packageName: ${{ variables.packageName }}
+    cosmosDbName: 'rutzsco-demo-cosmos-db-p'
