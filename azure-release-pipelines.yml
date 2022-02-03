@@ -9,60 +9,28 @@ variables:
   vmImageName: 'vs2017-win2016'
   azureSubscription: 'Demo Account'
   region: 'East US'
-  resourceGroupName: 'rutzsco-function-api-cosmos-db'
-  functionAppName: 'rutzsco-function-api-cosmos-db' 
-  functionAppStorageAccountName: 'azfuncapicdb1' 
+  packageName: 'Demo.Function.API.zip'
+
 stages:
- - stage: CI
-   displayName: CI stage 
-  
-   jobs:
-   - deployment: Deploy
-     displayName: Deploy
-     environment: 'CI'
-     pool:
-        vmImage: $(vmImageName)   
-      
-     strategy:
-        runOnce:
-          deploy:
-  
-            steps:
-                       
-            - task: AzureResourceManagerTemplateDeployment@3
-              displayName: 'CosmosDB - Deploy'
-              inputs:
-                azureResourceManagerConnection: '$(azureSubscription)'
-                resourceGroupName: '$(resourceGroupName)'
-                location: '$(region)'
-                csmFile: '$(Pipeline.Workspace)/build/Infrastructure/cosmos-db.json'
-                overrideParameters: '-accountName "rutzsco-demo-cosmos-db" -databaseName "MeasurementDB"'
-                deploymentOutputs: ResourceGroupDeploymentOutputs
-
-            - powershell: |
-                $outputs = ConvertFrom-Json $($env:ResourceGroupDeploymentOutputs)
-   
-                foreach ($output in $outputs.PSObject.Properties) {
-                    Write-Host "##vso[task.setvariable variable=RGDO_$($output.Name)]$($output.Value.value)"
-                }
-   
-              displayName: 'CosmosDB - Capture Outputs'
-
-            - task: AzureResourceGroupDeployment@3
-              displayName: '3. Create Function Infrastructure'
-              inputs:
-                azureResourceManagerConnection: '$(azureSubscription)'
-                resourceGroupName: '$(resourceGroupName)'
-                location: '$(region)'
-                csmFile: '$(Pipeline.Workspace)/build/Infrastructure/function-app-consumption.json'
-                overrideParameters: '-appName $(functionAppName) -storageAccountName $(functionAppStorageAccountName)'
-                deploymentOutputs: ResourceGroupDeploymentOutputs
- 
-            - task: AzureFunctionApp@1
-              displayName: '4. Azure functions app deploy'
-              inputs:
-                azureSubscription: '$(azureSubscription)'
-                appType: functionApp
-                appName: $(functionAppName)
-                package: '$(Pipeline.Workspace)/build/App/Demo.Function.Api.zip'
-                AppSettings: '-CosmosDBConnection $(RGDO_cosmosConnectionString)'
+- template: azure-release-pipelines-stage-template.yml
+  parameters:
+    stageName: 'CI'
+    environment: 'API-CI'
+    azureSubscription: ${{ variables.azureSubscription }}
+    functionAppName: 'rutzsco-function-api-cosmos-db-ci'
+    resourceGroupName: 'rutzsco-function-api-cosmos-db-ci'
+    storageAccountName: 'azfuncapicdb1ci'
+    region: ${{ variables.region }}
+    packageName: ${{ variables.packageName }}
+    cosmosDbName: 'rutzsco-demo-cosmos-db-ci'
+- template: azure-release-pipelines-stage-template.yml
+  parameters:
+    stageName: 'QA'
+    environment: 'API-QA'
+    azureSubscription: ${{ variables.azureSubscription }}
+    functionAppName: 'demo-function-api-qa'
+    resourceGroupName: 'demo-function-api-qa'
+    storageAccountName: 'azfuncapicdb1qa'
+    region: ${{ variables.region }}
+    packageName: ${{ variables.packageName }}
+    cosmosDbName: 'rutzsco-demo-cosmos-db-qa'
