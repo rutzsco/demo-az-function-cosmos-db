@@ -32,4 +32,5 @@ namespace Demo.Function.Api.Model
 
         public string Unit { get; set; }
     }
+
 }
