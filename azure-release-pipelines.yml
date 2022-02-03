@@ -28,8 +28,8 @@ stages:
     stageName: 'QA'
     environment: 'API-QA'
     azureSubscription: ${{ variables.azureSubscription }}
-    functionAppName: 'demo-function-api-qa'
-    resourceGroupName: 'demo-function-api-qa'
+    functionAppName: 'rutzsco-function-api-cosmos-db-qa'
+    resourceGroupName: 'rutzsco-function-api-cosmos-db-qa'
     storageAccountName: 'azfuncapicdb1qa'
     region: ${{ variables.region }}
     packageName: ${{ variables.packageName }}
