@@ -22,35 +22,20 @@ namespace Demo.Function.Api.Data
         {
             _cosmosClient = cosmosClient;
         }
-        public async Task<IEnumerable<Measurement>> GetAll(string accountId)
-        {
-            var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
-            QueryDefinition query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.accountId = @accountId")
-               .WithParameter("@accountId", accountId);
-
-            List<Measurement> results = new List<Measurement>();
-            using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query))
-            {
-                while (resultSetIterator.HasMoreResults)
-                {
-                    Microsoft.Azure.Cosmos.FeedResponse<Measurement> response = await resultSetIterator.ReadNextAsync();
-                    results.AddRange(response);
-                }
-            }
-            return results;
-        }
 
         public async Task<IEnumerable<Measurement>> GetAll(string accountId, string deviceId, DateTime startDateTime, DateTime endDateTime)
         {
-            var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
-            QueryDefinition query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.accountId = @accountId AND m.deviceId = @deviceId and m.timestamp >= @startDate and m.timestamp <= @endDate")
+            var container = _cosmosClient.GetContainer(DatabaseName, ContainerName);
+            var query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.deviceId = @deviceId and m.timestamp >= @startDate and m.timestamp <= @endDate")
                .WithParameter("@accountId", accountId)
                .WithParameter("@deviceId", deviceId)
                .WithParameter("@startDate", startDateTime.ToString("o"))
                .WithParameter("@endDate", endDateTime.ToString("o"));
+            
+            var requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey(accountId) };
 
             List<Measurement> results = new List<Measurement>();
-            using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query))
+            using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query, requestOptions: requestOptions))
             {
                 while (resultSetIterator.HasMoreResults)
                 {
@@ -63,7 +48,7 @@ namespace Demo.Function.Api.Data
 
         public async Task<Measurement> GetById(string id, string accountId)
         {
-            var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
+            var container = _cosmosClient.GetContainer(DatabaseName, ContainerName);
             var result = await container.ReadItemAsync<Measurement>(id, new PartitionKey(accountId));
             return result;
         }
