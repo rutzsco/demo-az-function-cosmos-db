@@ -22,12 +22,32 @@ namespace Demo.Function.Api.Data
         {
             _cosmosClient = cosmosClient;
         }
-
         public async Task<IEnumerable<Measurement>> GetAll(string accountId)
         {
             var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
             QueryDefinition query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.accountId = @accountId")
                .WithParameter("@accountId", accountId);
+
+            List<Measurement> results = new List<Measurement>();
+            using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query))
+            {
+                while (resultSetIterator.HasMoreResults)
+                {
+                    Microsoft.Azure.Cosmos.FeedResponse<Measurement> response = await resultSetIterator.ReadNextAsync();
+                    results.AddRange(response);
+                }
+            }
+            return results;
+        }
+
+        public async Task<IEnumerable<Measurement>> GetAll(string accountId, string deviceId, DateTime startDateTime, DateTime endDateTime)
+        {
+            var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
+            QueryDefinition query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.accountId = @accountId AND m.deviceId = @deviceId and m.timestamp >= @startDate and m.timestamp <= @endDate")
+               .WithParameter("@accountId", accountId)
+               .WithParameter("@deviceId", deviceId)
+               .WithParameter("@startDate", startDateTime.ToString("o"))
+               .WithParameter("@endDate", endDateTime.ToString("o"));
 
             List<Measurement> results = new List<Measurement>();
             using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query))

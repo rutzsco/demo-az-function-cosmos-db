@@ -22,6 +22,17 @@ namespace Demo.Function.Api
             this._cosmosClient = cosmosClient;
         }
 
+        [FunctionName("DeviceGetAllEndpoint")]
+        public async Task<IActionResult> GetDeviceMeasurements([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/device/{deviceId}/measurements")] HttpRequest req, string accountId, string deviceId, ILogger log, ExecutionContext context)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            var queryService = new MeasurementQueryService(_cosmosClient);
+            var listing = await queryService.GetAll(accountId, deviceId, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow);
+
+            return new OkObjectResult(listing);
+        }
+
         [FunctionName("MeasurementGetAllEndpoint")]
         public async Task<IActionResult> GetAll([HttpTrigger(AuthorizationLevel.Function, "get", Route = "account/{accountId}/measurement")] HttpRequest req, string accountId, ILogger log, ExecutionContext context)
         {
