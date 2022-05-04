@@ -6,7 +6,7 @@ resources:
     source: 'demo-az-function-cosmos-db - BUILD'
   
 variables:
-  vmImageName: 'vs2017-win2016'
+  vmImageName: 'windows-latest'
   azureSubscription: 'Demo Account'
   region: 'East US'
   packageName: 'Demo.Function.API.zip'
@@ -23,25 +23,3 @@ stages:
     region: ${{ variables.region }}
     packageName: ${{ variables.packageName }}
     cosmosDbName: 'rutzsco-demo-cosmos-db-ci'
-- template: azure-release-pipelines-stage-template.yml
-  parameters:
-    stageName: 'QA'
-    environment: 'API-QA'
-    azureSubscription: ${{ variables.azureSubscription }}
-    functionAppName: 'rutzsco-function-api-cosmos-db-qa'
-    resourceGroupName: 'rutzsco-function-api-cosmos-db-qa'
-    storageAccountName: 'azfuncapicdb1qa'
-    region: ${{ variables.region }}
-    packageName: ${{ variables.packageName }}
-    cosmosDbName: 'rutzsco-demo-cosmos-db-qa'
-- template: azure-release-pipelines-stage-template.yml
-  parameters:
-    stageName: 'PROD'
-    environment: 'API-PROD'
-    azureSubscription: ${{ variables.azureSubscription }}
-    functionAppName: 'rutzsco-function-api-cosmos-db-p'
-    resourceGroupName: 'rutzsco-function-api-cosmos-db-p'
-    storageAccountName: 'azfuncapicdb1qp'
-    region: ${{ variables.region }}
-    packageName: ${{ variables.packageName }}
-    cosmosDbName: 'rutzsco-demo-cosmos-db-p'
