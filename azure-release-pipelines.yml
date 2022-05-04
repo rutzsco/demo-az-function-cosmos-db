@@ -6,7 +6,7 @@ resources:
     source: 'demo-az-function-cosmos-db - BUILD'
   
 variables:
-  vmImageName: 'windows-latest'
+  vmImageName: 'ubuntu-latest'
   azureSubscription: 'Demo Account'
   region: 'East US'
   packageName: 'Demo.Function.API.zip'
