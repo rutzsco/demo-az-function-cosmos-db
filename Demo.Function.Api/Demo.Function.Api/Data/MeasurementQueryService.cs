@@ -27,7 +27,6 @@ namespace Demo.Function.Api.Data
         {
             var container = _cosmosClient.GetContainer(DatabaseName, ContainerName);
             var query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.deviceId = @deviceId and m.timestamp >= @startDate and m.timestamp <= @endDate")
-               .WithParameter("@accountId", accountId)
                .WithParameter("@deviceId", deviceId)
                .WithParameter("@startDate", startDateTime.ToString("o"))
                .WithParameter("@endDate", endDateTime.ToString("o"));
