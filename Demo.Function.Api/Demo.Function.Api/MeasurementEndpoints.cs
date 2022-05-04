@@ -75,7 +75,7 @@ namespace Demo.Function.Api
             for (int i = 0; i < cenerateMeasurementsCommand.Count; i++)
             {
                 var measurement = Measurement.CreateTempurature(cenerateMeasurementsCommand.AccountId, cenerateMeasurementsCommand.DeviceId, 50.2m);
-
+               
                 // Save
                 await documents.AddAsync(measurement);
             }

@@ -15,6 +15,7 @@ namespace Demo.Function.Api.Model
                 AccountId = accountId,
                 DeviceId = deviceId,
                 Type = "Tempurature",
+                Timestamp = DateTime.UtcNow,
                 TempuratureMeasurement = new TempuratureMeasurement() { Value = value, Unit = "F" }
             };
             return measurement;
@@ -35,6 +36,9 @@ namespace Demo.Function.Api.Model
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "timestamp")]
+        public DateTime Timestamp { get; set; }
 
         [JsonProperty(PropertyName = "tempuratureMeasurement")]
         public TempuratureMeasurement TempuratureMeasurement { get; set; }

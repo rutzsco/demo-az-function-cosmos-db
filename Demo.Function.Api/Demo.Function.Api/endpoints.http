@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:7071/api
+
+### Generate Request
+
+POST  {{baseUrl}}/measurement/generate
+content-type: application/json
+
+{
+    "count": 1000,
+    "accountId": "cafc10c4-fcce-4165-88a3-d45d323b0916",
+    "deviceId": "c26c3021-cbbf-4531-ac22-050ef53d8546"
+}
+
+### Get Measurements
+GET  {{baseUrl}}/measurement/cafc10c4-fcce-4165-88a3-d45d323b0916/measurement
