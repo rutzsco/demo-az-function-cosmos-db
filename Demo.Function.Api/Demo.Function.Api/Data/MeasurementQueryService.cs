@@ -26,7 +26,7 @@ namespace Demo.Function.Api.Data
         public async Task<IEnumerable<Measurement>> GetAll(string accountId)
         {
             var container = this._cosmosClient.GetContainer(DatabaseName, ContainerName);
-            QueryDefinition query = new QueryDefinition("SELECT * FROM Readings r WHERE r.id = @accountId")
+            QueryDefinition query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.accountId = @accountId")
                .WithParameter("@accountId", accountId);
 
             List<Measurement> results = new List<Measurement>();
