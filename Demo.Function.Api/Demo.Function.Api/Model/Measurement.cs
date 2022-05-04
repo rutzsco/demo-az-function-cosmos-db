@@ -7,6 +7,19 @@ namespace Demo.Function.Api.Model
 {
     public class Measurement
     {
+        public static Measurement CreateTempurature(Guid accountId, Guid deviceId, decimal value)
+        {
+            Measurement measurement = new Measurement()
+            {
+                Id = Guid.NewGuid(),
+                AccountId = accountId,
+                DeviceId = deviceId,
+                Type = "Tempurature",
+                TempuratureMeasurement = new TempuratureMeasurement() { Value = value, Unit = "F" }
+            };
+            return measurement;
+        }
+
         public Measurement()
         { 
         }
@@ -23,13 +36,16 @@ namespace Demo.Function.Api.Model
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
+        [JsonProperty(PropertyName = "tempuratureMeasurement")]
         public TempuratureMeasurement TempuratureMeasurement { get; set; }
     }
 
     public class TempuratureMeasurement
     {
+        [JsonProperty(PropertyName = "value")]
         public decimal Value { get; set; }
 
+        [JsonProperty(PropertyName = "unit")]
         public string Unit { get; set; }
     }
 

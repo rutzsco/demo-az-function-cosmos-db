@@ -60,5 +60,27 @@ namespace Demo.Function.Api
 
             return new OkObjectResult(measurement.Id);
         }
+
+        [FunctionName("MeasurementGenerateEndpoint")]
+        public static async Task<IActionResult> Generate([HttpTrigger(AuthorizationLevel.Function, "post", Route = "measurement/generate")] HttpRequest req,
+            [CosmosDB(databaseName: "MeasurementDB", collectionName: "Measurements", ConnectionStringSetting = "CosmosDBConnection")] IAsyncCollector<Measurement> documents,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            // Convert to request object
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var cenerateMeasurementsCommand = JsonConvert.DeserializeObject<GenerateMeasurementsCommand>(requestBody);
+
+            for (int i = 0; i < cenerateMeasurementsCommand.Count; i++)
+            {
+                var measurement = Measurement.CreateTempurature(cenerateMeasurementsCommand.AccountId, cenerateMeasurementsCommand.DeviceId, 50.2m);
+
+                // Save
+                await documents.AddAsync(measurement);
+            }
+
+            return new OkObjectResult("OK");
+        }
     }
 }
