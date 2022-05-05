@@ -112,7 +112,7 @@
     },
     "container2PartitionKey": {
       "type": "string",
-      "defaultValue": "/accountId",
+      "defaultValue": "/deviceId",
       "metadata": {
         "description": "The name for the first container partition key"
       }

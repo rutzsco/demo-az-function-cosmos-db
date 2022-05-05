@@ -28,7 +28,7 @@ namespace Demo.Function.Api
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             var queryService = new MeasurementQueryService(_cosmosClient);
-            var listing = await queryService.GetAll(accountId, deviceId, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow);
+            var listing = await queryService.GetAll(deviceId, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow);
 
             return new OkObjectResult(listing);
         }

@@ -23,15 +23,15 @@ namespace Demo.Function.Api.Data
             _cosmosClient = cosmosClient;
         }
 
-        public async Task<IEnumerable<Measurement>> GetAll(string accountId, string deviceId, DateTime startDateTime, DateTime endDateTime)
+        public async Task<IEnumerable<Measurement>> GetAll(string deviceId, DateTime startDateTime, DateTime endDateTime)
         {
             var container = _cosmosClient.GetContainer(DatabaseName, ContainerName);
-            var query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.deviceId = @deviceId and m.timestamp >= @startDate and m.timestamp <= @endDate")
+            var query = new QueryDefinition("SELECT * FROM Measurements m WHERE m.timestamp >= @startDate and m.timestamp <= @endDate")
                .WithParameter("@deviceId", deviceId)
                .WithParameter("@startDate", startDateTime.ToString("o"))
                .WithParameter("@endDate", endDateTime.ToString("o"));
             
-            var requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey(accountId) };
+            var requestOptions = new QueryRequestOptions() { PartitionKey = new PartitionKey(deviceId) };
 
             List<Measurement> results = new List<Measurement>();
             using (FeedIterator<Measurement> resultSetIterator = container.GetItemQueryIterator<Measurement>(query, requestOptions: requestOptions))
